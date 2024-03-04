@@ -3,22 +3,19 @@ import './App.css';
 
 const ScrollEffectComponent = () => {
   const [scrollY, setScrollY] = useState(0);
+  const [barMarginTop, setBarMarginTop] = useState(0);
 
   useEffect(() => {
-    const barra = document.getElementById("barra");
-    const barra2 = document.getElementById("barra2");
-    const pixeles = document.getElementById("pixeles");
-    const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-
-
     const updateBarPositions = () => {
       const newScrollY = window.scrollY;
+      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+      const redBarBottom = maxScroll - document.getElementById("barra").offsetHeight;
 
-      if (newScrollY <= maxScroll) {
-        barra.style.marginTop = `${newScrollY * 2}px`;
+      if (newScrollY <= 500 && newScrollY <= maxScroll) {
+        const newMarginTop = Math.min(newScrollY * 2.24, redBarBottom);
+        setBarMarginTop(`${newMarginTop}px`);
       }
 
-      pixeles.innerHTML = newScrollY;
       setScrollY(newScrollY);
     };
 
@@ -34,9 +31,9 @@ const ScrollEffectComponent = () => {
 
   return (
     <div>
-      <p className="barra" id="barra"></p>
+      <p className="barra" id="barra" style={{ marginTop: barMarginTop }}></p>
       <p className="barra2" id="barra2"></p>
-      <p id="pixeles"></p>
+      <p id="pixeles">{scrollY}</p>
     </div>
   );
 };
@@ -50,4 +47,3 @@ function App() {
 }
 
 export default App;
-
